@@ -1,0 +1,2 @@
+ALTER TABLE pauta
+MODIFY COLUMN status VARCHAR(30);
