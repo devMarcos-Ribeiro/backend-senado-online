@@ -1,6 +1,6 @@
 CREATE TABLE pessoa(
-    codigo BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50) NOT NULL,
-    email VARCHAR(120) NOT NULL,
-    senha VARCHAR(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    codigo serial PRIMARY KEY,
+    nome VARCHAR ( 50 ) NOT NULL,
+    email VARCHAR ( 255 ) UNIQUE NOT NULL,
+    senha VARCHAR ( 50 ) NOT NULL
+);

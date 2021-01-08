@@ -1,8 +1,8 @@
-CREATE TABLE PAUTA(
-    codigo BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(20) NOT NULL,
-    descricao VARCHAR(200),
-    status VARCHAR(20) NOT NULL,
-    codigo_pessoa BIGINT(20) NOT NULL,
+CREATE TABLE pauta (
+    codigo serial PRIMARY KEY,
+    nome VARCHAR ( 50 ) NOT NULL,
+    descricao VARCHAR ( 200 ) NOT NULL,
+    status VARCHAR ( 20 ) NOT NULL,
+    codigo_pessoa INT NOT NULL,
     FOREIGN KEY (codigo_pessoa) REFERENCES pessoa(codigo)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
