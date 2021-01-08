@@ -1,6 +1,7 @@
 package com.senadoonline.senadoUrsoMineiro.resource;
 
 import com.senadoonline.senadoUrsoMineiro.model.Pessoa;
+import com.senadoonline.senadoUrsoMineiro.model.dto.PessoaDTO;
 import com.senadoonline.senadoUrsoMineiro.repository.PessoaRepository;
 import com.senadoonline.senadoUrsoMineiro.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -25,22 +27,25 @@ public class PessoaResource {
     PessoaService pessoaService;
 
     @PostMapping
-    public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa){
+    public ResponseEntity<PessoaDTO> criar(@Valid @RequestBody Pessoa pessoa){
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+        PessoaDTO pessoaDTO = new PessoaDTO(pessoaSalva);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
                 .buildAndExpand(pessoaSalva.getCodigo()).toUri();
-        return ResponseEntity.created(uri).body(pessoa);
+        return ResponseEntity.created(uri).body(pessoaDTO);
     }
 
     @GetMapping
-    public List<Pessoa> listar(){
-        return pessoaRepository.findAll();
+    public List<PessoaDTO> listar(){
+        List<Pessoa> pessoas =  pessoaRepository.findAll();
+        return pessoas.stream().map(x -> new PessoaDTO(x)).collect(Collectors.toList());
+
     }
 
     @PutMapping("/{codigo}")
-    public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
+    public ResponseEntity<PessoaDTO> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
         Pessoa pessoaSalva = pessoaService.atualizarPessoa(codigo, pessoa);
-        return ResponseEntity.ok(pessoaSalva);
+        return ResponseEntity.ok(new PessoaDTO(pessoaSalva));
     }
 
     @DeleteMapping("/{codigo}")
@@ -50,8 +55,8 @@ public class PessoaResource {
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<Pessoa> buscarPeloCodigo(@PathVariable Long codigo) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(codigo);
-        return pessoa.isPresent()? ResponseEntity.ok().body(pessoa.get()) : ResponseEntity.notFound().build();
+    public ResponseEntity<PessoaDTO> buscarPeloCodigo(@PathVariable Long codigo) {
+        Pessoa pessoa = pessoaService.buscarPessoaPorCodigo(codigo);
+        return ResponseEntity.ok().body(new PessoaDTO(pessoa));
     }
 }

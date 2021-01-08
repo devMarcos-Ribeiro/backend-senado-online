@@ -45,7 +45,7 @@ public class PautaResource {
         Pauta pautaSalva = pautaService.salvar(pauta);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
                 .buildAndExpand(pautaSalva.getCodigo()).toUri();
-        return ResponseEntity.created(uri).body(pauta);
+        return ResponseEntity.created(uri).body(pautaSalva);
     }
 
     @PostMapping("/aprovarPauta/{codigo}")

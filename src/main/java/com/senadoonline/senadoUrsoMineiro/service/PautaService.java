@@ -1,8 +1,10 @@
 package com.senadoonline.senadoUrsoMineiro.service;
 
 import com.senadoonline.senadoUrsoMineiro.model.Pauta;
+import com.senadoonline.senadoUrsoMineiro.model.Pessoa;
 import com.senadoonline.senadoUrsoMineiro.model.Status;
 import com.senadoonline.senadoUrsoMineiro.repository.PautaRepository;
+import com.senadoonline.senadoUrsoMineiro.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ public class PautaService {
 
     @Autowired
     PautaRepository pautaRepository;
+
+    @Autowired
+    PessoaService pessoaService;
 
     public Pauta buscarPeloCodigo(Long codigo){
         return this.pautaRepository.findById(codigo)
